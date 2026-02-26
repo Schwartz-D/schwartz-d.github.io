@@ -517,6 +517,27 @@
     letter-spacing: 0.08em;
   }
 
+  /* ── SMALL PROJECT GALLERIES ── */
+  .project-card-with-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .project-card-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .project-card-gallery .gallery-main {
+    aspect-ratio: 16/9;
+  }
+
+  .project-card-gallery .gallery-thumbs {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(30px); }
@@ -555,6 +576,246 @@
   @keyframes ticker {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
+  }
+
+  /* ── GALLERY ── */
+  .project-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+  }
+
+  .gallery-main {
+    position: relative;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    background: #111;
+    cursor: zoom-in;
+  }
+
+  .gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, opacity 0.3s ease;
+    display: block;
+  }
+
+  .gallery-main:hover img { transform: scale(1.02); }
+
+  .gallery-main-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(transparent, rgba(10,10,10,0.85));
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    pointer-events: none;
+  }
+
+  .gallery-main-overlay span {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,242,238,0.75);
+  }
+
+  .gallery-expand-btn {
+    background: rgba(200,169,122,0.2);
+    border: 1px solid rgba(200,169,122,0.4);
+    color: var(--accent);
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    pointer-events: all;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .gallery-expand-btn:hover { background: rgba(200,169,122,0.35); }
+
+  .gallery-thumbs {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.4rem;
+  }
+
+  .gallery-thumb {
+    aspect-ratio: 1;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    opacity: 0.55;
+    transition: opacity 0.2s;
+  }
+
+  .gallery-thumb:hover,
+  .gallery-thumb.active { opacity: 1; }
+
+  .gallery-thumb.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .gallery-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery-view-all {
+    background: none;
+    border: 1px solid rgba(200,169,122,0.3);
+    color: var(--accent);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 0.25rem;
+  }
+
+  .gallery-view-all:hover { background: rgba(200,169,122,0.1); }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(5,5,5,0.97);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .lightbox.open { opacity: 1; pointer-events: all; }
+
+  .lightbox-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    flex-shrink: 0;
+  }
+
+  .lightbox-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+  }
+
+  .lightbox-counter {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--light-mid);
+    margin: 0 auto 0 1.5rem;
+  }
+
+  .lightbox-close {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--white);
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .lightbox-close:hover { border-color: var(--accent); color: var(--accent); }
+
+  .lightbox-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 1.5rem 5rem;
+  }
+
+  .lightbox-img-wrap img {
+    max-width: 100%;
+    max-height: calc(100vh - 220px);
+    object-fit: contain;
+    display: block;
+    transition: opacity 0.25s ease;
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(200,169,122,0.1);
+    border: 1px solid rgba(200,169,122,0.25);
+    color: var(--accent);
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .lightbox-nav:hover { background: rgba(200,169,122,0.25); }
+  .lightbox-nav.prev { left: 1.5rem; }
+  .lightbox-nav.next { right: 1.5rem; }
+
+  .lightbox-caption {
+    padding: 0.4rem 2rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--light-mid);
+    text-transform: uppercase;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .lightbox-footer {
+    padding: 0.75rem 2rem 1rem;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    flex-shrink: 0;
+    scrollbar-width: none;
+    justify-content: center;
+  }
+
+  .lightbox-footer::-webkit-scrollbar { display: none; }
+
+  .lightbox-thumb {
+    width: 56px;
+    height: 42px;
+    flex-shrink: 0;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .lightbox-thumb:hover { opacity: 0.75; }
+  .lightbox-thumb.active { opacity: 1; border-color: var(--accent); }
+
+  .lightbox-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   /* ── RESPONSIVE ── */
@@ -624,7 +885,7 @@
     <div class="hero-divider"></div>
     <div class="contact-block">
       <p>Philadelphia, PA</p>
-      <p><a href="mailto:daniel.schwartz519@gmail.com">daniel.schwartz519@gmail.com</a></p>
+      <p><a href="/cdn-cgi/l/email-protection#3b5f5a55525e57154858534c5a494f410e0a027b5c565a525715585456"><span class="__cf_email__" data-cfemail="6a0e0b04030f06441909021d0b181e105f5b532a0d070b030644090507">[email&#160;protected]</span></a></p>
       <p><a href="tel:6107578013">610-757-8013</a></p>
     </div>
   </div>
@@ -679,97 +940,290 @@
           <span class="tag">Philadelphia</span>
         </div>
       </div>
-      <div style="padding: 2rem; background: rgba(200,169,122,0.06); border: 1px solid rgba(200,169,122,0.15); display: flex; flex-direction: column; justify-content: center;">
-        <div style="font-family: 'Bebas Neue', sans-serif; font-size: 5rem; color: rgba(200,169,122,0.15); line-height: 1; margin-bottom: 1.5rem;">FRAME<br>WORKS</div>
-        <p style="font-size: 0.8rem; color: var(--light-mid); line-height: 1.6;">Basement · Administration · Cafeteria · Auditorium · Home Rooms · Classrooms · Seminar Rooms · Science Labs · Library · Visual Arts Studio · Computer Lab</p>
+      <div class="project-gallery">
+        <div class="gallery-main">
+          <img id="galleryHero" src="liacouras-06.jpg" alt="Liacouras Design School exterior perspective" loading="lazy" onclick="openLightbox(0)">
+          <div class="gallery-main-overlay">
+            <span id="galleryCaption">Exterior Perspective — Entry Plaza</span>
+            <button class="gallery-expand-btn" onclick="openLightbox(currentGalleryIndex)" aria-label="Expand image">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1h4M1 1v4M13 1h-4M13 1v4M1 13h4M1 13v-4M13 13h-4M13 13v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="gallery-thumbs">
+          <div class="gallery-thumb active" onclick="setGalleryImage(0)" data-src="liacouras-06.jpg" data-caption="Exterior Perspective — Entry Plaza">
+            <img src="liacouras-06.jpg" alt="Exterior perspective" loading="lazy">
+          </div>
+          <div class="gallery-thumb" onclick="setGalleryImage(1)" data-src="liacouras-13.jpg" data-caption="South Elevation">
+            <img src="liacouras-13.jpg" alt="South elevation" loading="lazy">
+          </div>
+          <div class="gallery-thumb" onclick="setGalleryImage(2)" data-src="liacouras-14.jpg" data-caption="Interior — Cafeteria & Auditorium Steps">
+            <img src="liacouras-14.jpg" alt="Cafeteria interior" loading="lazy">
+          </div>
+          <div class="gallery-thumb" onclick="setGalleryImage(3)" data-src="liacouras-03.jpeg" data-caption="Interior — Atrium & Circulation Core">
+            <img src="liacouras-03.jpeg" alt="Atrium interior" loading="lazy">
+          </div>
+          <div class="gallery-thumb" onclick="setGalleryImage(4)" data-src="liacouras-01.jpg" data-caption="Cross Section — Building Organisation">
+            <img src="liacouras-01.jpg" alt="Cross section" loading="lazy">
+          </div>
+          <div class="gallery-thumb" onclick="setGalleryImage(5)" data-src="liacouras-09.jpg" data-caption="Exploded Axonometric — Program Levels">
+            <img src="liacouras-09.jpg" alt="Exploded axon" loading="lazy">
+          </div>
+        </div>
+        <button class="gallery-view-all" onclick="openLightbox(0)">
+          View All 16 Drawings
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
 
-    <div class="project-card">
-      <p class="project-number">II / 2024</p>
-      <h3 class="project-name">Riad Apollo</h3>
-      <p class="project-type">Residential Mixed-Use</p>
-      <p class="project-desc">A mixed-use apartment building and creative hub designed to support minority and immigrant communities in Philadelphia through housing, work, and shared cultural space. Integrates residential units with studios, collaborative workspaces, and community-oriented amenities.</p>
-      <div class="project-tags">
-        <span class="tag">Mixed-Use</span>
-        <span class="tag">Residential</span>
-        <span class="tag">Community</span>
-        <span class="tag">6 Floors</span>
+    <div class="project-card project-card-with-gallery">
+      <div>
+        <p class="project-number">II / 2024</p>
+        <h3 class="project-name">Riad Apollo</h3>
+        <p class="project-type">Residential Mixed-Use — Philadelphia</p>
+        <p class="project-desc">A mixed-use apartment building and creative hub designed to support minority and immigrant communities in Philadelphia through housing, work, and shared cultural space. Integrates residential units with studios, collaborative workspaces, and community-oriented amenities across seven floors, with an open courtyard at its core.</p>
+        <div class="project-tags">
+          <span class="tag">Mixed-Use</span>
+          <span class="tag">Residential</span>
+          <span class="tag">Community</span>
+          <span class="tag">7 Floors</span>
+          <span class="tag">Philadelphia</span>
+        </div>
+      </div>
+      <div class="project-card-gallery">
+        <div class="gallery-main">
+          <img id="riadapolloGalleryHero" src="riad-apallo-03.jpg" alt="Riad Apollo isometric" loading="lazy" onclick="openLightboxFor('riadapollo', 0)">
+          <div class="gallery-main-overlay">
+            <span id="riadapolloGalleryCaption">Isometric Model View</span>
+            <button class="gallery-expand-btn" onclick="openLightboxFor('riadapollo', currentRiadapolloIndex)" aria-label="Expand image">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1h4M1 1v4M13 1h-4M13 1v4M1 13h4M1 13v-4M13 13h-4M13 13v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="gallery-thumbs" style="grid-template-columns: repeat(6, 1fr);">
+          <div class="gallery-thumb active" onclick="setRiadapolloImage(0)"><img src="riad-apallo-03.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setRiadapolloImage(1)"><img src="riad-apallo-02.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setRiadapolloImage(2)"><img src="riad-apallo-04.jpeg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setRiadapolloImage(3)"><img src="riad-apallo-05.jpeg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setRiadapolloImage(4)"><img src="riad-apallo-06.jpeg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setRiadapolloImage(5)"><img src="riad-apallo-01.jpg" alt="" loading="lazy"></div>
+        </div>
+        <button class="gallery-view-all" onclick="openLightboxFor('riadapollo', 0)">
+          View All 16 Drawings
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
 
-    <div class="project-card">
-      <p class="project-number">III / 2024</p>
-      <h3 class="project-name">H.A.L.O</h3>
-      <p class="project-type">Holistic Architecture for Living & Outreach — Mixed-Use Civic</p>
-      <p class="project-desc">A multiuse civic and wellness center rooted in North Philadelphia's social, cultural, and health landscape. Integrates community outreach, educational spaces, clinical care, and a pharmacy. A sweeping internal circulation spine wraps a C-shaped interior void, transforming vertical movement into a daylight-filled promenade.</p>
-      <div class="project-tags">
-        <span class="tag">Civic</span>
-        <span class="tag">Wellness</span>
-        <span class="tag">Mixed-Use</span>
-        <span class="tag">Healthcare</span>
+    <div class="project-card project-card-with-gallery">
+      <div>
+        <p class="project-number">III / 2024</p>
+        <h3 class="project-name">H.A.L.O</h3>
+        <p class="project-type">Holistic Architecture for Living & Outreach — Mixed-Use Civic</p>
+        <p class="project-desc">A multiuse civic and wellness center rooted in North Philadelphia's social, cultural, and health landscape. Integrates community outreach, educational spaces, clinical care, and a pharmacy. A sweeping internal circulation spine wraps a C-shaped interior void, transforming vertical movement into a daylight-filled promenade.</p>
+        <div class="project-tags">
+          <span class="tag">Civic</span>
+          <span class="tag">Wellness</span>
+          <span class="tag">Mixed-Use</span>
+          <span class="tag">Healthcare</span>
+        </div>
+      </div>
+      <div class="project-card-gallery">
+        <div class="gallery-main">
+          <img id="haloGalleryHero" src="halo-01.jpg" alt="H.A.L.O — Exploded Axonometric" loading="lazy" onclick="openLightboxFor('halo', 0)">
+          <div class="gallery-main-overlay">
+            <span id="haloGalleryCaption">Exploded Axonometric — Program Levels</span>
+            <button class="gallery-expand-btn" onclick="openLightboxFor('halo', currentHaloIndex)" aria-label="Expand image">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1h4M1 1v4M13 1h-4M13 1v4M1 13h4M1 13v-4M13 13h-4M13 13v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="gallery-thumbs" style="grid-template-columns: repeat(6, 1fr);">
+          <div class="gallery-thumb active" onclick="setHaloImage(0)"><img src="halo-01.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHaloImage(1)"><img src="halo-08_.jpeg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHaloImage(2)"><img src="halo-05.jpeg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHaloImage(3)"><img src="halo-04.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHaloImage(4)"><img src="halo-09.jpeg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHaloImage(5)"><img src="halo-17.jpg" alt="" loading="lazy"></div>
+        </div>
+        <button class="gallery-view-all" onclick="openLightboxFor('halo', 0)">
+          View All 21 Drawings
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
 
-    <div class="project-card">
-      <p class="project-number">IV / 2023</p>
-      <h3 class="project-name">HomeFront</h3>
-      <p class="project-type">Children's Health Center — Community Clinic</p>
-      <p class="project-desc">Reframes pediatric healthcare through the scale and familiarity of residential architecture. A raised, semi-circular skylight forms a daylight-filled circulation spine. Exam rooms line this central path with individualized "homefront" façades evoking the rhythm of a neighborhood street, organized into age-specific quadrants.</p>
-      <div class="project-tags">
-        <span class="tag">Healthcare</span>
-        <span class="tag">Pediatric</span>
-        <span class="tag">Community</span>
+    <div class="project-card project-card-with-gallery">
+      <div>
+        <p class="project-number">IV / 2023</p>
+        <h3 class="project-name">HomeFront</h3>
+        <p class="project-type">Children's Health Center — Community Clinic</p>
+        <p class="project-desc">Reframes pediatric healthcare through the scale and familiarity of residential architecture. A raised, semi-circular skylight forms a daylight-filled circulation spine. Exam rooms line this central path with individualized "homefront" façades evoking the rhythm of a neighborhood street, organized into age-specific quadrants.</p>
+        <div class="project-tags">
+          <span class="tag">Healthcare</span>
+          <span class="tag">Pediatric</span>
+          <span class="tag">Community</span>
+        </div>
+      </div>
+      <div class="project-card-gallery">
+        <div class="gallery-main">
+          <img id="homefrontGalleryHero" src="homefront-01.jpg" alt="HomeFront Children's Health Center" loading="lazy" onclick="openLightboxFor('homefront', 0)">
+          <div class="gallery-main-overlay">
+            <span id="homefrontGalleryCaption">Exterior Perspective — Entry</span>
+            <button class="gallery-expand-btn" onclick="openLightboxFor('homefront', currentHomefrontIndex)" aria-label="Expand image">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1h4M1 1v4M13 1h-4M13 1v4M1 13h4M1 13v-4M13 13h-4M13 13v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="gallery-thumbs" style="grid-template-columns: repeat(7, 1fr);">
+          <div class="gallery-thumb active" onclick="setHomefrontImage(0)"><img src="homefront-01.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHomefrontImage(1)"><img src="homefront-02.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHomefrontImage(2)"><img src="homefront-03.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHomefrontImage(3)"><img src="homefront-04.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHomefrontImage(4)"><img src="homefront-05.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHomefrontImage(5)"><img src="homefront-06.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setHomefrontImage(6)"><img src="homefront-07.jpg" alt="" loading="lazy"></div>
+        </div>
+        <button class="gallery-view-all" onclick="openLightboxFor('homefront', 0)">
+          View All 7 Drawings
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
 
-    <div class="project-card">
-      <p class="project-number">V / 2023</p>
-      <h3 class="project-name">The Green House</h3>
-      <p class="project-type">Single-Family Residential — Tokyo, 2049</p>
-      <p class="project-desc">Explores the future of dwelling through adaptive spatial systems responding to environmental, social, and technological change. Designed as a prototype for living in 2049. Located in Tokyo, integrating flexible living spaces, layered circulation, and indoor–outdoor transitions. Aligned with the Tokyo Zero Emissions Plan.</p>
-      <div class="project-tags">
-        <span class="tag">Residential</span>
-        <span class="tag">Sustainable</span>
-        <span class="tag">Tokyo</span>
-        <span class="tag">Speculative</span>
+    <div class="project-card project-card-with-gallery">
+      <div>
+        <p class="project-number">V / 2023</p>
+        <h3 class="project-name">The Green House</h3>
+        <p class="project-type">Single-Family Residential — Tokyo, 2049</p>
+        <p class="project-desc">Explores the future of dwelling through adaptive spatial systems responding to environmental, social, and technological change. Designed as a prototype for living in 2049. Located in Tokyo, integrating flexible living spaces, layered circulation, and indoor–outdoor transitions. Aligned with the Tokyo Zero Emissions Plan.</p>
+        <div class="project-tags">
+          <span class="tag">Residential</span>
+          <span class="tag">Sustainable</span>
+          <span class="tag">Tokyo</span>
+          <span class="tag">Speculative</span>
+        </div>
+      </div>
+      <div class="project-card-gallery">
+        <div class="gallery-main">
+          <img id="greenhouseGalleryHero" src="greenhouse-01.jpg" alt="The Green House exterior" loading="lazy" onclick="openLightboxFor('greenhouse', 0)">
+          <div class="gallery-main-overlay">
+            <span id="greenhouseGalleryCaption">Exterior Perspective — Garden Passage</span>
+            <button class="gallery-expand-btn" onclick="openLightboxFor('greenhouse', currentGreenhouseIndex)" aria-label="Expand image">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1h4M1 1v4M13 1h-4M13 1v4M1 13h4M1 13v-4M13 13h-4M13 13v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="gallery-thumbs" style="grid-template-columns: repeat(6, 1fr);">
+          <div class="gallery-thumb active" onclick="setGreenhouseImage(0)"><img src="greenhouse-01.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setGreenhouseImage(1)"><img src="greenhouse-02.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setGreenhouseImage(2)"><img src="greenhouse-03.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setGreenhouseImage(3)"><img src="greenhouse-04.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setGreenhouseImage(4)"><img src="greenhouse-05.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setGreenhouseImage(5)"><img src="greenhouse-06.jpg" alt="" loading="lazy"></div>
+        </div>
+        <button class="gallery-view-all" onclick="openLightboxFor('greenhouse', 0)">
+          View All 12 Drawings
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
 
-    <div class="project-card">
-      <p class="project-number">VI / 2023</p>
-      <h3 class="project-name">Post-Carbon Fishtown</h3>
-      <p class="project-type">Large-Scale Urban Framework — Master Plan</p>
-      <p class="project-desc">A phased revitalization master plan envisioning Fishtown over 15 and 100-year horizons. Emphasizes bikes, pedestrians, and public transportation. Streets progressively recede car infrastructure, returning space to nature, people, and transit. By 100 years, cars are fully eliminated from the neighborhood.</p>
-      <div class="project-tags">
-        <span class="tag">Urban Design</span>
-        <span class="tag">Master Plan</span>
-        <span class="tag">Sustainability</span>
-        <span class="tag">Philadelphia</span>
+    <div class="project-card project-card-with-gallery">
+      <div>
+        <p class="project-number">VI / 2023</p>
+        <h3 class="project-name">Post-Carbon Fishtown</h3>
+        <p class="project-type">Large-Scale Urban Framework — Master Plan</p>
+        <p class="project-desc">A phased revitalization master plan envisioning Fishtown over 15 and 100-year horizons. Emphasizes bikes, pedestrians, and public transportation. Streets progressively recede car infrastructure, returning space to nature, people, and transit. By 100 years, cars are fully eliminated from the neighborhood.</p>
+        <div class="project-tags">
+          <span class="tag">Urban Design</span>
+          <span class="tag">Master Plan</span>
+          <span class="tag">Sustainability</span>
+          <span class="tag">Philadelphia</span>
+        </div>
+      </div>
+      <div class="project-card-gallery">
+        <div class="gallery-main">
+          <img id="fishtownGalleryHero" src="fishtown-01.jpg" alt="Post-Carbon Fishtown master plan" loading="lazy" onclick="openLightboxFor('fishtown', 0)">
+          <div class="gallery-main-overlay">
+            <span id="fishtownGalleryCaption">Master Plan Overview</span>
+            <button class="gallery-expand-btn" onclick="openLightboxFor('fishtown', currentFishtownIndex)" aria-label="Expand image">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1h4M1 1v4M13 1h-4M13 1v4M1 13h4M1 13v-4M13 13h-4M13 13v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="gallery-thumbs" style="grid-template-columns: repeat(7, 1fr);">
+          <div class="gallery-thumb active" onclick="setFishtownImage(0)"><img src="fishtown-01.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setFishtownImage(1)"><img src="fishtown-02.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setFishtownImage(2)"><img src="fishtown-03.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setFishtownImage(3)"><img src="fishtown-04.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setFishtownImage(4)"><img src="fishtown-05.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setFishtownImage(5)"><img src="fishtown-06.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setFishtownImage(6)"><img src="fishtown-07.jpg" alt="" loading="lazy"></div>
+        </div>
+        <button class="gallery-view-all" onclick="openLightboxFor('fishtown', 0)">
+          View All 7 Drawings
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
 
-    <div class="project-card">
-      <p class="project-number">VII / 2022</p>
-      <h3 class="project-name">Elfreth Alley House</h3>
-      <p class="project-type">Single-Family Residential</p>
-      <p class="project-desc">A residential design situated within one of America's oldest continuously inhabited streets. The project navigates the tension between historic context and contemporary living, responding to the intimate scale and material character of Elfreth's Alley.</p>
-      <div class="project-tags">
-        <span class="tag">Residential</span>
-        <span class="tag">Historic Context</span>
-        <span class="tag">Philadelphia</span>
+    <div class="project-card project-card-with-gallery">
+      <div>
+        <p class="project-number">VII / 2022</p>
+        <h3 class="project-name">Elfreth Alley House</h3>
+        <p class="project-type">Single-Family Residential</p>
+        <p class="project-desc">A residential design situated within one of America's oldest continuously inhabited streets. The project navigates the tension between historic context and contemporary living, responding to the intimate scale and material character of Elfreth's Alley.</p>
+        <div class="project-tags">
+          <span class="tag">Residential</span>
+          <span class="tag">Historic Context</span>
+          <span class="tag">Philadelphia</span>
+        </div>
+      </div>
+      <div class="project-card-gallery">
+        <div class="gallery-main">
+          <img id="elfrethGalleryHero" src="elfreth-01.jpg" alt="Elfreth Alley House" loading="lazy" onclick="openLightboxFor('elfreth', 0)">
+          <div class="gallery-main-overlay">
+            <span id="elfrethGalleryCaption">Elfreth Alley House</span>
+            <button class="gallery-expand-btn" onclick="openLightboxFor('elfreth', currentElfrethIndex)" aria-label="Expand image">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1h4M1 1v4M13 1h-4M13 1v4M1 13h4M1 13v-4M13 13h-4M13 13v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="gallery-thumbs" style="grid-template-columns: repeat(2, 1fr);">
+          <div class="gallery-thumb active" onclick="setElfrethImage(0)"><img src="elfreth-01.jpg" alt="" loading="lazy"></div>
+          <div class="gallery-thumb" onclick="setElfrethImage(1)"><img src="elfreth-02.jpg" alt="" loading="lazy"></div>
+        </div>
+        <button class="gallery-view-all" onclick="openLightboxFor('elfreth', 0)">
+          View All 2 Drawings
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
 
-    <div class="project-card">
-      <p class="project-number">VIII / 2022</p>
-      <h3 class="project-name">Cliff House</h3>
-      <p class="project-type">Case Study</p>
-      <p class="project-desc">An analytical case study exploring architectural response to extreme topography. Examines how structure, enclosure, and program are mediated by a dramatic clifftop site, investigating the relationship between building and landscape at the limits of conventional construction.</p>
-      <div class="project-tags">
-        <span class="tag">Case Study</span>
-        <span class="tag">Topography</span>
-        <span class="tag">Analysis</span>
+    <div class="project-card project-card-with-gallery">
+      <div>
+        <p class="project-number">VIII / 2022</p>
+        <h3 class="project-name">Cliff House</h3>
+        <p class="project-type">Case Study</p>
+        <p class="project-desc">An analytical case study exploring architectural response to extreme topography. Examines how structure, enclosure, and program are mediated by a dramatic clifftop site, investigating the relationship between building and landscape at the limits of conventional construction.</p>
+        <div class="project-tags">
+          <span class="tag">Case Study</span>
+          <span class="tag">Topography</span>
+          <span class="tag">Analysis</span>
+        </div>
+      </div>
+      <div class="project-card-gallery">
+        <div class="gallery-main">
+          <img id="cliffhouseGalleryHero" src="cliffhouse-01.jpg" alt="Cliff House" loading="lazy" onclick="openLightboxFor('cliffhouse', 0)">
+          <div class="gallery-main-overlay">
+            <span id="cliffhouseGalleryCaption">Exploded Axonometric</span>
+            <button class="gallery-expand-btn" onclick="openLightboxFor('cliffhouse', 0)" aria-label="Expand image">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1h4M1 1v4M13 1h-4M13 1v4M1 13h4M1 13v-4M13 13h-4M13 13v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -948,20 +1402,338 @@
   <h2 class="contact-headline">Let's Work<br>Together</h2>
   <p class="contact-sub">Available for full-time positions, internships, and freelance projects.</p>
   <div class="contact-links">
-    <a href="mailto:daniel.schwartz519@gmail.com" class="contact-link primary">
-      daniel.schwartz519@gmail.com
+    <a href="/cdn-cgi/l/email-protection#dcb8bdb2b5b9b0f2afbfb4abbdaea8a6e9ede59cbbb1bdb5b0f2bfb3b1" class="contact-link primary">
+      <span class="__cf_email__" data-cfemail="dfbbbeb1b6bab3f1acbcb7a8beadaba5eaeee69fb8b2beb6b3f1bcb0b2">[email&#160;protected]</span>
     </a>
-    <a href="tel:6107578013" class="contact-link">
-      610-757-8013
-    </a>
+    <a href="tel:6107578013" class="contact-link">610-757-8013</a>
+    <a href="https://linkedin.com/in/danielschwartz" class="contact-link">LinkedIn</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <span class="footer-name">Daniel Schwartz — Architecture</span>
-  <span class="footer-copy">M.Arch Candidate · Temple University · Philadelphia, PA · 2026</span>
+  <span class="footer-name">Daniel Schwartz</span>
+  <span class="footer-copy">© 2025 — Architecture Portfolio</span>
 </footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lightbox-header">
+    <span class="lightbox-title">Liacouras Design School</span>
+    <span class="lightbox-counter" id="lbCounter">1 / 16</span>
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+  </div>
+  <div class="lightbox-body">
+    <button class="lightbox-nav prev" onclick="lbNav(-1)" aria-label="Previous">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="lightbox-img-wrap">
+      <img id="lbImg" src="" alt="">
+    </div>
+    <button class="lightbox-nav next" onclick="lbNav(1)" aria-label="Next">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <div class="lightbox-caption" id="lbCaption"></div>
+  <div class="lightbox-footer" id="lbThumbs"></div>
+</div>
+
+<script>
+// ── LIACOURAS GALLERY (featured) ──
+const galleryImages = [
+  { src: 'liacouras-06.jpg', caption: 'Exterior Perspective — Entry Plaza' },
+  { src: 'liacouras-13.jpg', caption: 'South Elevation' },
+  { src: 'liacouras-14.jpg', caption: 'Interior — Cafeteria & Auditorium Steps' },
+  { src: 'liacouras-03.jpeg', caption: 'Interior — Atrium & Circulation Core' },
+  { src: 'liacouras-01.jpg', caption: 'Cross Section — Building Organisation' },
+  { src: 'liacouras-02.jpg', caption: 'Longitudinal Section' },
+  { src: 'liacouras-04.jpeg', caption: 'North Elevation' },
+  { src: 'liacouras-05.jpeg', caption: 'East Elevation' },
+  { src: 'liacouras-07.jpg', caption: 'Ground Floor Plan — Cafeteria & Administration' },
+  { src: 'liacouras-08.jpg', caption: 'Ground Floor Plan — Gymnasium & Auditorium' },
+  { src: 'liacouras-09.jpg', caption: 'Exploded Axonometric — Program Levels' },
+  { src: 'liacouras-10.jpg', caption: 'Second Floor Plan — Homerooms & Language Labs' },
+  { src: 'liacouras-11.jpg', caption: 'Third Floor Plan — Science Labs, Seminar Rooms & Library' },
+  { src: 'liacouras-12.jpg', caption: 'Library Detail Section' },
+  { src: 'liacouras-15.jpg', caption: 'Detail Wall Section & Partial East Elevation' },
+  { src: 'liacouras-16.jpg', caption: 'Roof, CLT Floor & Foundation Assembly Details' },
+];
+
+// ── FISHTOWN GALLERY ──
+const fishtownImages = [
+  { src: 'fishtown-01.jpg', caption: 'Master Plan Overview' },
+  { src: 'fishtown-02.jpg', caption: 'Exploded Axonometric — Building Typology' },
+  { src: 'fishtown-03.jpg', caption: 'Section Perspective — Street & Building' },
+  { src: 'fishtown-04.jpg', caption: 'Street Section — Transit Corridor' },
+  { src: 'fishtown-05.jpg', caption: 'Street Section — Pedestrian Boulevard' },
+  { src: 'fishtown-06.jpg', caption: 'Building Evolution — Now to 100 Years' },
+  { src: 'fishtown-07.jpg', caption: 'Street Detail Section' },
+];
+
+// ── ELFRETH GALLERY ──
+const elfrethImages = [
+  { src: 'elfreth-01.jpg', caption: 'Section Perspective' },
+  { src: 'elfreth-02.jpg', caption: 'Exploded Axonometric' },
+];
+
+// ── CLIFF HOUSE GALLERY ──
+const cliffhouseImages = [
+  { src: 'cliffhouse-01.jpg', caption: 'Exploded Axonometric' },
+];
+
+// ── HALO GALLERY ──
+const haloImages = [
+  { src: 'halo-01.jpg', caption: 'Exploded Axonometric — Program Levels' },
+  { src: 'halo-08_.jpeg', caption: 'Exterior Perspective' },
+  { src: 'halo-05.jpeg', caption: 'Interior — Courtyard' },
+  { src: 'halo-04.jpg', caption: 'Interior — Rooftop Lounge' },
+  { src: 'halo-06.jpeg', caption: 'Interior — Cafeteria & Common Space' },
+  { src: 'halo-07.jpeg', caption: 'Interior — Entry Level' },
+  { src: 'halo-02.jpg', caption: 'Interior — Clinical Suite' },
+  { src: 'halo-09.jpeg', caption: 'Floor Plan — Typical Level' },
+  { src: 'halo-10.jpg', caption: 'Floor Plan — Ground Level' },
+  { src: 'halo-11.jpg', caption: 'South Elevation' },
+  { src: 'halo-12.jpg', caption: 'West Elevation' },
+  { src: 'halo-13.jpg', caption: 'Floor Plan — Upper Level' },
+  { src: 'halo-14.jpg', caption: 'Floor Plan — Mid Level' },
+  { src: 'halo-15.jpg', caption: 'Floor Plan — Split Level' },
+  { src: 'halo-17.jpg', caption: 'Structural Axonometric' },
+  { src: 'halo-18.jpg', caption: 'Floor Plan — Wellness Level' },
+  { src: 'halo-19.jpg', caption: 'Section — Building Organisation' },
+  { src: 'halo-20.jpg', caption: 'Floor Plan — Lower Level' },
+  { src: 'halo-21.jpg', caption: 'Section Perspective' },
+  { src: 'halo-03.jpg', caption: 'Project Logo & Identity' },
+  { src: 'halo-16.jpg', caption: 'Floor Plan — Entry Level' },
+];
+
+// ── RIAD APOLLO GALLERY ──
+const riadapolloImages = [
+  { src: 'riad-apallo-03.jpg', caption: 'Isometric Model View' },
+  { src: 'riad-apallo-02.jpg', caption: 'Interior — Courtyard with Vertical Gardens' },
+  { src: 'riad-apallo-04.jpeg', caption: 'Interior — Gallery Corridor' },
+  { src: 'riad-apallo-05.jpeg', caption: 'Interior — Atrium Skylight View' },
+  { src: 'riad-apallo-06.jpeg', caption: 'Interior — Bedroom Suite' },
+  { src: 'riad-apallo-07.jpeg', caption: 'Interior — Kitchen & Living Area' },
+  { src: 'riad-apallo-09.jpeg', caption: 'Interior — Entry Lobby' },
+  { src: 'riad-apallo-01.jpg', caption: 'Section — Rainwater & Sustainability Systems' },
+  { src: 'riad-apallo-11.jpeg', caption: 'Floor Plan — 1st Floor' },
+  { src: 'riad-apallo-12.jpg', caption: 'Floor Plan — 2nd Floor' },
+  { src: 'riad-apallo-08.jpeg', caption: 'Floor Plan — 3rd Floor' },
+  { src: 'riad-apallo-10.jpeg', caption: 'Floor Plan — 4th Floor' },
+  { src: 'riad-apallo-13.jpeg', caption: 'Floor Plan — 6th Floor' },
+  { src: 'riad-apallo-14.jpg', caption: 'Floor Plan — 7th Floor' },
+  { src: 'riad-apallo-12.jpeg', caption: 'Elevations' },
+  { src: 'riad-apallo_19.jpg', caption: 'Unit Plan — Two-Bedroom Apartment' },
+];
+
+// ── HOMEFRONT GALLERY ──
+const homefrontImages = [
+  { src: 'homefront-01.jpg', caption: 'Exterior Perspective — Entry' },
+  { src: 'homefront-02.jpg', caption: 'Aerial View — Courtyard' },
+  { src: 'homefront-03.jpg', caption: 'Exterior Perspective — Playground' },
+  { src: 'homefront-04.jpg', caption: 'Interior — Reception & Waiting' },
+  { src: 'homefront-05.jpg', caption: 'Interior — Circulation Spine' },
+  { src: 'homefront-06.jpg', caption: 'Floor Plan — Ground Level' },
+  { src: 'homefront-07.jpg', caption: 'Elevation — South Facade' },
+];
+
+// ── GREENHOUSE GALLERY ──
+const greenhouseImages = [
+  { src: 'greenhouse-01.jpg', caption: 'Exterior Perspective — Garden Passage' },
+  { src: 'greenhouse-02.jpg', caption: 'Exterior Perspective — North Facade' },
+  { src: 'greenhouse-03.jpg', caption: 'Section Perspective — Program Levels' },
+  { src: 'greenhouse-04.jpg', caption: 'Floor Plan — Ground Level' },
+  { src: 'greenhouse-05.jpg', caption: 'Roof Terrace Detail' },
+  { src: 'greenhouse-06.jpg', caption: 'Interior — Home Office' },
+  { src: 'greenhouse-07.jpg', caption: 'Floor Plan — Second Level' },
+  { src: 'greenhouse-08.jpg', caption: 'Interior — Kitchen & Dining' },
+  { src: 'greenhouse-09.jpg', caption: 'Elevation — Glass Facade' },
+  { src: 'greenhouse-10.jpg', caption: 'Interior — Master Bedroom' },
+  { src: 'greenhouse-11.jpg', caption: 'Floor Plan — Living Level' },
+  { src: 'greenhouse-12.jpg', caption: 'Floor Plan — Ground Floor' },
+];
+
+// ── MULTI-GALLERY STATE ──
+const galleries = {
+  liacouras: { images: galleryImages, title: 'Liacouras Design School' },
+  fishtown: { images: fishtownImages, title: 'Post-Carbon Fishtown' },
+  elfreth: { images: elfrethImages, title: 'Elfreth Alley House' },
+  cliffhouse: { images: cliffhouseImages, title: 'Cliff House' },
+  riadapollo: { images: riadapolloImages, title: 'Riad Apollo' },
+  homefront: { images: homefrontImages, title: 'HomeFront' },
+  greenhouse: { images: greenhouseImages, title: 'The Green House' },
+};
+
+let currentLbIndex = 0;
+let currentGalleryIndex = 0;
+let currentLbGallery = 'liacouras';
+
+let currentRiadapolloIndex = 0;
+let currentHaloIndex = 0;
+let currentFishtownIndex = 0;
+let currentElfrethIndex = 0;
+let currentHomefrontIndex = 0;
+let currentGreenhouseIndex = 0;
+
+function setGalleryImage(idx) {
+  currentGalleryIndex = idx;
+  const item = galleryImages[idx];
+  const hero = document.getElementById('galleryHero');
+  hero.style.opacity = '0';
+  setTimeout(() => {
+    hero.src = item.src;
+    hero.alt = item.caption;
+    hero.style.opacity = '1';
+  }, 200);
+  document.getElementById('galleryCaption').textContent = item.caption;
+  document.querySelectorAll('.gallery-thumb').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+}
+
+function setRiadapolloImage(idx) {
+  currentRiadapolloIndex = idx;
+  const item = riadapolloImages[idx];
+  const hero = document.getElementById('riadapolloGalleryHero');
+  hero.style.opacity = '0';
+  setTimeout(() => { hero.src = item.src; hero.alt = item.caption; hero.style.opacity = '1'; }, 200);
+  document.getElementById('riadapolloGalleryCaption').textContent = item.caption;
+  const thumbs = document.querySelectorAll('[onclick^="setRiadapolloImage"]');
+  thumbs.forEach((t, i) => t.classList.toggle('active', i === idx));
+}
+
+function setHaloImage(idx) {
+  currentHaloIndex = idx;
+  const item = haloImages[idx];
+  const hero = document.getElementById('haloGalleryHero');
+  hero.style.opacity = '0';
+  setTimeout(() => { hero.src = item.src; hero.alt = item.caption; hero.style.opacity = '1'; }, 200);
+  document.getElementById('haloGalleryCaption').textContent = item.caption;
+  const thumbs = document.querySelectorAll('[onclick^="setHaloImage"]');
+  thumbs.forEach((t, i) => t.classList.toggle('active', i === idx));
+}
+
+function setFishtownImage(idx) {
+  currentFishtownIndex = idx;
+  const item = fishtownImages[idx];
+  const hero = document.getElementById('fishtownGalleryHero');
+  hero.style.opacity = '0';
+  setTimeout(() => { hero.src = item.src; hero.alt = item.caption; hero.style.opacity = '1'; }, 200);
+  document.getElementById('fishtownGalleryCaption').textContent = item.caption;
+  document.querySelectorAll('#fishtownGalleryHero').forEach(() => {});
+  // Update fishtown thumbs
+  const thumbs = document.querySelectorAll('[onclick^="setFishtownImage"]');
+  thumbs.forEach((t, i) => t.classList.toggle('active', i === idx));
+}
+
+function setElfrethImage(idx) {
+  currentElfrethIndex = idx;
+  const item = elfrethImages[idx];
+  const hero = document.getElementById('elfrethGalleryHero');
+  hero.style.opacity = '0';
+  setTimeout(() => { hero.src = item.src; hero.alt = item.caption; hero.style.opacity = '1'; }, 200);
+  document.getElementById('elfrethGalleryCaption').textContent = item.caption;
+  const thumbs = document.querySelectorAll('[onclick^="setElfrethImage"]');
+  thumbs.forEach((t, i) => t.classList.toggle('active', i === idx));
+}
+
+function setHomefrontImage(idx) {
+  currentHomefrontIndex = idx;
+  const item = homefrontImages[idx];
+  const hero = document.getElementById('homefrontGalleryHero');
+  hero.style.opacity = '0';
+  setTimeout(() => { hero.src = item.src; hero.alt = item.caption; hero.style.opacity = '1'; }, 200);
+  document.getElementById('homefrontGalleryCaption').textContent = item.caption;
+  const thumbs = document.querySelectorAll('[onclick^="setHomefrontImage"]');
+  thumbs.forEach((t, i) => t.classList.toggle('active', i === idx));
+}
+
+function setGreenhouseImage(idx) {
+  currentGreenhouseIndex = idx;
+  const item = greenhouseImages[idx];
+  const hero = document.getElementById('greenhouseGalleryHero');
+  hero.style.opacity = '0';
+  setTimeout(() => { hero.src = item.src; hero.alt = item.caption; hero.style.opacity = '1'; }, 200);
+  document.getElementById('greenhouseGalleryCaption').textContent = item.caption;
+  const thumbs = document.querySelectorAll('[onclick^="setGreenhouseImage"]');
+  thumbs.forEach((t, i) => t.classList.toggle('active', i === idx));
+}
+
+function openLightboxFor(galleryKey, idx) {
+  currentLbGallery = galleryKey;
+  currentLbIndex = idx;
+  const lb = document.getElementById('lightbox');
+  document.querySelector('.lightbox-title').textContent = galleries[galleryKey].title;
+  // Rebuild thumbs for this gallery
+  const container = document.getElementById('lbThumbs');
+  container.innerHTML = '';
+  galleries[galleryKey].images.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'lightbox-thumb' + (i === idx ? ' active' : '');
+    div.onclick = () => { currentLbIndex = i; updateLb(); };
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.alt = item.caption;
+    img.loading = 'lazy';
+    div.appendChild(img);
+    container.appendChild(div);
+  });
+  updateLb();
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openLightbox(idx) {
+  openLightboxFor('liacouras', idx);
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function lbNav(dir) {
+  const imgs = galleries[currentLbGallery].images;
+  currentLbIndex = (currentLbIndex + dir + imgs.length) % imgs.length;
+  updateLb();
+}
+
+function updateLb() {
+  const imgs = galleries[currentLbGallery].images;
+  const item = imgs[currentLbIndex];
+  const img = document.getElementById('lbImg');
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = item.src;
+    img.alt = item.caption;
+    img.style.opacity = '1';
+  }, 150);
+  document.getElementById('lbCaption').textContent = item.caption;
+  document.getElementById('lbCounter').textContent = (currentLbIndex + 1) + ' / ' + imgs.length;
+  document.querySelectorAll('.lightbox-thumb').forEach((t, i) => {
+    t.classList.toggle('active', i === currentLbIndex);
+  });
+  const active = document.querySelector('.lightbox-thumb.active');
+  if (active) active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+}
+
+function buildLbThumbs() {
+  // No-op: handled by openLightboxFor
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// Click outside to close
+document.getElementById('lightbox').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+});
+</script>
 
 </body>
 </html>
